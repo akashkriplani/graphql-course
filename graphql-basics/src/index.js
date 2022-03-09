@@ -1,12 +1,16 @@
 import { GraphQLServer } from 'graphql-yoga';
 
+// Type definitions (Schema)
 const typeDefs = `
   type Query {
     hello: String!
     name: String!
+    location: String!
+    bio: String!
   }
 `;
 
+// Resolvers
 const resolvers = {
   Query: {
     hello() {
@@ -14,6 +18,12 @@ const resolvers = {
     },
     name() {
       return `Akash Kriplani`;
+    },
+    location() {
+      return `Lucknow`;
+    },
+    bio() {
+      return `Experience full stack web developer`;
     }
   }
 };
