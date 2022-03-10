@@ -1,13 +1,52 @@
 import { GraphQLServer } from 'graphql-yoga';
 
+const users = [
+  {
+    id: '1',
+    name: 'Alice',
+    email: 'alice@facegle.io',
+    age: 31
+  },
+  {
+    id: '2',
+    name: 'Bob',
+    email: 'bob@facegle.io'
+  },
+  {
+    id: '3',
+    name: 'Michelle',
+    email: 'michelle@facegle.io'
+  }
+];
+
+const posts = [
+  {
+    id: '1',
+    title: `Harry Potter and the Philosopher's Stone`,
+    body: 'Part 1 of the Harry Potter Saga series by J.K. Rowling.',
+    published: true
+  },
+  {
+    id: '2',
+    title: `A Song of Ice and Fire`,
+    body: 'A classic fiction written by George R.R. Martin.',
+    published: true
+  },
+  {
+    id: '3',
+    title: `Playing it my way`,
+    body: 'An autobiography of the God of Cricket - Sachin Tendulkar.',
+    published: true
+  }
+];
+
 // Scalar types - String, Boolean, Int, Float, ID
 
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
-    greeting(name: String, position: String): String!
-    add(numbers: [Float!]!): Float!
-    grades: [Int!]!
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
     me: User!
     post: Post!
   }
@@ -30,24 +69,24 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
-    greeting(parent, args, ctx, info) {
-      if (args.name && args.position) {
-        return `Hello, ${args.name}! You are my favorite ${args.position}.`;
-      } else {
-        return 'Hello!';
+    users(parent, args, ctx, info) {
+      if (!args.query) {
+        return users;
       }
+      return users.filter((user) => {
+        return user.name.toLowerCase().includes(args.query.toLowerCase());
+      });
     },
-    add(parent, args, ctx, info) {
-      if (args.numbers.length === 0) {
-        return 0;
+    posts(parent, args, ctx, info) {
+      if (!args.query) {
+        return posts;
       }
-
-      return args.numbers.reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-    },
-    grades(parent, args, ctx, info) {
-      return [99, 94, 96];
+      return posts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(args.query.toLowerCase()) ||
+          post.body.toLowerCase().includes(args.query.toLowerCase())
+        );
+      });
     },
     me() {
       return {
