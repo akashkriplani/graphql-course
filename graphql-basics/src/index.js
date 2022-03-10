@@ -28,6 +28,13 @@ const posts = [
     author: '1'
   },
   {
+    id: '102',
+    title: `Harry Potter and the Chamber of Secrets`,
+    body: 'Part 2 of the Harry Potter Saga by J.K. Rowling.',
+    published: true,
+    author: '1'
+  },
+  {
     id: '201',
     title: `A Song of Ice and Fire`,
     body: 'A classic fiction written by George R.R. Martin.',
@@ -59,6 +66,7 @@ const typeDefs = `
     name: String!
     email: String!
     age: Int
+    posts: [Post!]!
   }
 
   type Post {
@@ -112,6 +120,11 @@ const resolvers = {
   Post: {
     author(parent, args, ctx, info) {
       return users.find((user) => user.id === parent.author);
+    }
+  },
+  User: {
+    posts(parent, args, ctx, info) {
+      return posts.filter((post) => post.author === parent.id);
     }
   }
 };
