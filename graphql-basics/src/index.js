@@ -53,19 +53,23 @@ const posts = [
 const comments = [
   {
     id: '1001',
-    text: 'What a fantastic read! Indeed a classic!'
+    text: 'What a fantastic read! Indeed a classic!',
+    author: '1'
   },
   {
     id: '1002',
-    text: `Covers Sachin's story in a concise and impactful manner.`
+    text: `Covers Sachin's story in a concise and impactful manner.`,
+    author: '3'
   },
   {
     id: '1003',
-    text: 'Second part is more engrossing and an improvement over the first one.'
+    text: 'Second part is more engrossing and an improvement over the first one.',
+    author: '1'
   },
   {
     id: '1004',
-    text: 'There is a TV show based on this book! I am going to watch that as well.'
+    text: 'There is a TV show based on this book! I am going to watch that as well.',
+    author: '2'
   }
 ];
 
@@ -87,6 +91,7 @@ const typeDefs = `
     email: String!
     age: Int
     posts: [Post!]!
+    comments: [Comment!]!
   }
 
   type Post {
@@ -100,6 +105,7 @@ const typeDefs = `
   type Comment {
     id: ID!
     text: String!
+    author: User!
   }
 `;
 
@@ -153,6 +159,14 @@ const resolvers = {
   User: {
     posts(parent, args, ctx, info) {
       return posts.filter((post) => post.author === parent.id);
+    },
+    comments(parent, args, ctx, info) {
+      return comments.filter((comment) => comment.author === parent.id);
+    }
+  },
+  Comment: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => user.id === parent.author);
     }
   }
 };
