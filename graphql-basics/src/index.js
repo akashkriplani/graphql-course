@@ -50,6 +50,25 @@ const posts = [
   }
 ];
 
+const comments = [
+  {
+    id: '1001',
+    text: 'What a fantastic read! Indeed a classic!'
+  },
+  {
+    id: '1002',
+    text: `Covers Sachin's story in a concise and impactful manner.`
+  },
+  {
+    id: '1003',
+    text: 'Second part is more engrossing and an improvement over the first one.'
+  },
+  {
+    id: '1004',
+    text: 'There is a TV show based on this book! I am going to watch that as well.'
+  }
+];
+
 // Scalar types - String, Boolean, Int, Float, ID
 
 // Type definitions (Schema)
@@ -59,6 +78,7 @@ const typeDefs = `
     posts(query: String): [Post!]!
     me: User!
     post: Post!
+    comments: [Comment!]!
   }
 
   type User {
@@ -75,6 +95,11 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
+  }
+
+  type Comment {
+    id: ID!
+    text: String!
   }
 `;
 
@@ -115,6 +140,9 @@ const resolvers = {
         body: 'This is my first custom post',
         published: true
       };
+    },
+    comments(parent, args, ctx, info) {
+      return comments;
     }
   },
   Post: {
