@@ -3,40 +3,43 @@ import { GraphQLServer } from 'graphql-yoga';
 const users = [
   {
     id: '1',
-    name: 'Alice',
-    email: 'alice@facegle.io',
+    name: 'J.K. Rowling',
+    email: 'joanne@facegle.io',
     age: 31
   },
   {
     id: '2',
-    name: 'Bob',
-    email: 'bob@facegle.io'
+    name: 'George R.R. Martin',
+    email: 'george@facegle.io'
   },
   {
     id: '3',
-    name: 'Michelle',
-    email: 'michelle@facegle.io'
+    name: 'Sachin Tendulkar',
+    email: 'sachin@facegle.io'
   }
 ];
 
 const posts = [
   {
-    id: '1',
+    id: '101',
     title: `Harry Potter and the Philosopher's Stone`,
-    body: 'Part 1 of the Harry Potter Saga series by J.K. Rowling.',
-    published: true
+    body: 'Part 1 of the Harry Potter Saga by J.K. Rowling.',
+    published: true,
+    author: '1'
   },
   {
-    id: '2',
+    id: '201',
     title: `A Song of Ice and Fire`,
     body: 'A classic fiction written by George R.R. Martin.',
-    published: true
+    published: true,
+    author: '2'
   },
   {
-    id: '3',
+    id: '301',
     title: `Playing it my way`,
     body: 'An autobiography of the God of Cricket - Sachin Tendulkar.',
-    published: true
+    published: true,
+    author: '3'
   }
 ];
 
@@ -63,6 +66,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 `;
 
@@ -103,6 +107,11 @@ const resolvers = {
         body: 'This is my first custom post',
         published: true
       };
+    }
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => user.id === parent.author);
     }
   }
 };
